@@ -11,6 +11,7 @@ namespace ShopOnline.Web.Pages
 
         public IEnumerable<ProductDto> Products { get; set; }
 
+        public string ErrorMessage { get; set; }
         protected override async Task OnInitializedAsync()
         {
             Products = await ProductsService.GetItems();

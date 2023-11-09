@@ -4,68 +4,65 @@ using System.Net.Http.Json;
 
 namespace ShopOnline.Web.Services
 {
-    public class ProductService : IProductService
+    public class ShoppingCartService : IShoppingCartService
     {
         private readonly HttpClient httpClient;
 
-        public ProductService(HttpClient httpClient)
+        public ShoppingCartService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }
-
-        public async Task<ProductDto> GetItem(int id)
+        public async Task<CartItemDto> AddItem(CartItemToAddDto cartItemToAddDto)
         {
             try
             {
-                var response = await httpClient.GetAsync($"api/Product/{id}");
+                var response = await httpClient.PostAsJsonAsync<CartItemToAddDto>("api/ShoppingCart", cartItemToAddDto);
 
                 if (response.IsSuccessStatusCode)
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                     {
-                        return default(ProductDto);
+                        return default(CartItemDto);
                     }
-                    
-                    return await response.Content.ReadFromJsonAsync<ProductDto>();
+
+                    return await response.Content.ReadFromJsonAsync<CartItemDto>();
                 }
                 else
                 {
                     var message = await response.Content.ReadAsStringAsync();
-                    throw new Exception(message);
+                    throw new Exception($"Http status code: {response.StatusCode} Message- {message}");
                 }
-                
             }
             catch (Exception)
             {
-                //Log exception
+
                 throw;
             }
         }
-
-        public async Task<IEnumerable<ProductDto>> GetItems()
+        public async Task<IEnumerable<CartItemDto>> GetItems(int userId)
         {
             try
             {
-                var response = await httpClient.GetAsync("api/Product");
+                var response = await httpClient.GetAsync($"api/ShoppingCart/{userId}/GetItems");
 
                 if (response.IsSuccessStatusCode)
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                     {
-                        return Enumerable.Empty<ProductDto>();
+                        return Enumerable.Empty<CartItemDto>();
                     }
 
-                    return await response.Content.ReadFromJsonAsync<IEnumerable<ProductDto>>();
+                    return await response.Content.ReadFromJsonAsync<IEnumerable<CartItemDto>>();
                 }
-                else
+                else 
                 {
                     var message = await response.Content.ReadAsStringAsync();
-                    throw new Exception(message);
+                    throw new Exception($"Http status code: {response.StatusCode} Message- {message}");
                 }
             }
             catch (Exception)
             {
-                //Log exception
+
                 throw;
             }
         }
