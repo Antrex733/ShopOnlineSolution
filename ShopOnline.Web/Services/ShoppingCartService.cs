@@ -42,7 +42,7 @@ namespace ShopOnline.Web.Services
             }
         }
 
-        public async Task<CartItemDto> DelteItem(int id)
+        public async Task<CartItemDto> DeleteItem(int id)
         {
             try
             {
