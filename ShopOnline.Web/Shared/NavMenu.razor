@@ -9,7 +9,6 @@
         </button>
     </div>
 </div>
-
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
@@ -27,11 +26,12 @@
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
             </NavLink>
         </div>
-        <div class="nav-item px-3 d-sm-none">
+        <div class="nav-item px-3">
             <NavLink class="nav-link" href="ShoppingCart">
                 <span class="fas fa-shopping-cart" aria-hidden="true"></span>&nbsp;Shopping Cart (<b>@shoppingCartItemsCount</b>)
             </NavLink>
         </div>
+
     </nav>
 </div>
 
@@ -46,6 +46,7 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
     protected override void OnInitialized()
     {
         shoppingCartService.OnShoppingCartChanged += ShoppingCartChanged;
